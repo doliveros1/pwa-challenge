@@ -10,13 +10,39 @@ export default class ProfileRepository {
       return toDomain(res.data.results)
     })()
   }
+
+  getFavorites (nickname) {
+    return (async (resolve, reject) => {
+      const res = await apiData.getFavorites(nickname)
+      return toDomain(res.data)
+    })()
+  }
+
+  addFavorite (nickname, profile) {
+    return (async (resolve, reject) => {
+      const res = await apiData.getFavorites(nickname)
+      // TODO: Check if exists
+      res.data.push(profile)
+      await apiData.setFavorites(nickname, res.data)
+      return {}
+    })()
+  }
+
+  deleteFavorite (nickname, id) {
+    return (async (resolve, reject) => {
+      const res = await apiData.getFavorites(nickname)
+      const favorites = filterDeleted(res.data, id)
+      await apiData.setFavorites(nickname, favorites)
+      return toDomain(favorites)
+    })()
+  }
 }
 
 function toDomain (results) {
   const profiles = []
   results.forEach(result => {
     const profile = new Profile()
-    profile.id = result.id.value
+    profile.id = result.login.uuid
     profile.name = result.name.title + ' ' + result.name.first + ' ' + result.name.last
     profile.email = result.email
     profile.gender = result.gender
@@ -27,6 +53,16 @@ function toDomain (results) {
     profile.dor = result.registered.date
     profile.wrapper = result
     profiles.push(profile)
+  })
+  return profiles
+}
+
+function filterDeleted (results, id) {
+  const profiles = []
+  results.forEach(result => {
+    if (result.login.uuid !== id) {
+      profiles.push(result)
+    }
   })
   return profiles
 }

@@ -5,21 +5,35 @@
       :items="profiles"
       item-key="name"
       class="elevation-1"
-      @click:row="handleClick"
     >
+    <template v-slot:item.detail="props">
+        <v-btn class="mx-2" fab dark small color="#fd0015" @click="onDetail(props.item)">
+          <v-icon dark>mdi-information</v-icon>
+        </v-btn>
+      </template>
+      <template v-slot:item.controls="props">
+        <v-btn class="mx-2" fab dark small color="#fd0015" @click="onNewFavorite(props.item)">
+          <v-icon dark>mdi-heart</v-icon>
+        </v-btn>
+      </template>
     </v-data-table>
+    <ProfileTemplate :visible="showProfile" :profile="currentProfile" @close="showProfile=false" />
   </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
+import ProfileTemplate from '../components/ProfileTemplate'
 
 export default {
   name: 'Profiles',
   components: {
+    ProfileTemplate
   },
   data () {
     return {
-      profiles: []
+      profiles: [],
+      showProfile: false,
+      currentProfile: {}
     }
   },
   computed: {
@@ -31,12 +45,14 @@ export default {
         { text: 'Nacionalidad', value: 'nat' },
         { text: 'Fecha nac.', value: 'dob' },
         { text: 'Edad', value: 'age' },
-        { text: 'Fecha reg.', value: 'dor' }
+        { text: 'Fecha reg.', value: 'dor' },
+        { text: '', value: 'detail', sortable: false },
+        { text: '', value: 'controls', sortable: false }
       ]
     }
   },
   methods: {
-    ...mapActions(['getProfiles']),
+    ...mapActions(['getProfiles', 'addFavorite', 'setCurrentProfile']),
     exitApp () {
       this.$router.push('/')
     },
@@ -46,8 +62,16 @@ export default {
         typeof value === 'string' &&
         value.toString().indexOf(search) !== -1
     },
-    handleClick (row) {
-      alert(JSON.stringify(row.wrapper))
+    onDetail (row) {
+      this.currentProfile = row.wrapper
+      this.showProfile = true
+    },
+    onNewFavorite (row) {
+      this.addFavorite(row.wrapper).then(() => {
+        alert('Añadido a favoritos')
+      }, error => {
+        alert(error)
+      })
     }
   },
   created () {
