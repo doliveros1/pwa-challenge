@@ -3,6 +3,8 @@
     <v-app>
       <v-navigation-drawer v-if="nickname !== ''"
       app
+      dark
+      color="#2f2f2f"
       v-model="drawer"
       :mini-variant.sync="mini"
       permanent
@@ -46,7 +48,9 @@
         </v-list>
     </v-navigation-drawer>
       <v-content>
-        <router-view @onLogin="onLogin"></router-view>
+        <v-toolbar v-if="nickname !== ''" dark color="#2f2f2f"><v-toolbar-title>{{ currentView }}</v-toolbar-title></v-toolbar>
+
+        <router-view @onLogin="onLogin" @onNewPage="onNewPage"></router-view>
       </v-content>
     </v-app>
   </div>
@@ -61,23 +65,25 @@ export default {
   data () {
     return {
       nickname: this.$store.state.nickname,
-      mini: true
+      mini: true,
+      currentView: 'Perfiles'
     }
   },
   methods: {
     ...mapActions(['setNickName']),
     showLogin () {
       this.nickname = ''
+      this.currentView = 'Perfiles'
       this.setNickName(this.nickname)
       this.$router.push('/login')
     },
     showProfiles () {
+      this.currentView = 'Perfiles'
       this.$router.push('/profiles')
-      this.mini = true
     },
     showFavorites () {
+      this.currentView = 'Favoritos'
       this.$router.push('/favorites')
-      this.mini = true
     },
     onLogin (show) {
       if (show) {
@@ -86,6 +92,9 @@ export default {
       } else {
         this.nickname = ''
       }
+    },
+    onNewPage (newPage) {
+      this.currentView = newPage
     }
   },
   created () {
@@ -119,6 +128,9 @@ export default {
 h1 {
   color: #fd0015;
   margin-bottom: 2em;
+}
+.colorPrimary {
+  color:#2d2d2d
 }
 </style>
 <style>

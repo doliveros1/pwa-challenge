@@ -1,21 +1,32 @@
 <template>
 <div id="contentView">
   <v-content>
-    <h1>Login</h1>
-    <form>
-      <v-text-field
-        v-model="nickname"
-        label="Nickname"
-        required
-      ></v-text-field>
-      <v-btn
-        class="mr-4"
-        @click="enterNickname"
-      >
-        Entrar
-      </v-btn>
-    </form>
-  </v-content>
+         <v-container fluid fill-height>
+            <v-layout align-center justify-center>
+               <v-flex xs12 sm8 md4>
+                  <v-card class="elevation-12">
+                     <v-toolbar dark color="#2d2d2d">
+                        <v-toolbar-title>Enter nickname</v-toolbar-title>
+                     </v-toolbar>
+                     <v-card-text>
+                        <v-form>
+                           <v-text-field
+                              v-model="nickname"
+                              name="login"
+                              label="Nickname"
+                              type="text"
+                           ></v-text-field>
+                        </v-form>
+                     </v-card-text>
+                     <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="#f0f0f0" @click="enterNickname">Entrar</v-btn>
+                     </v-card-actions>
+                  </v-card>
+               </v-flex>
+            </v-layout>
+         </v-container>
+      </v-content>
 </div>
 </template>
 
