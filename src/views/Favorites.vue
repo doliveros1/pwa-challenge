@@ -61,7 +61,7 @@ export default {
       this.$router.push('/')
     },
     onDetail (row) {
-      this.currentProfile = row.wrapper
+      this.currentProfile = row
       this.showProfile = true
     },
     onDeleteFavorite (row) {

@@ -63,7 +63,7 @@ export default {
         value.toString().indexOf(search) !== -1
     },
     onDetail (row) {
-      this.currentProfile = row.wrapper
+      this.currentProfile = row
       this.showProfile = true
     },
     onNewFavorite (row) {
