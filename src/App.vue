@@ -1,32 +1,26 @@
 <template>
   <div id="app">
     <v-app>
-      <v-navigation-drawer v-if="nickname !== ''"
-      app
-      dark
-      color="#2f2f2f"
-      v-model="drawer"
-      :mini-variant.sync="mini"
-      permanent
-    >
-      <v-list-item class="px-2">
+      <v-navigation-drawer
+        v-if="nickname !== ''"
+        app
+        dark
+        color="#2f2f2f"
+        v-model="drawer"
+        :mini-variant.sync="mini"
+        permanent
+      >
+        <v-list-item class="px-2">
+          <v-list-item-title>{{ nickname }}</v-list-item-title>
 
-        <v-list-item-title>{{ nickname }}</v-list-item-title>
+          <v-btn icon @click.stop="mini = !mini">
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+        </v-list-item>
 
-        <v-btn
-          icon
-          @click.stop="mini = !mini"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-      </v-list-item>
+        <v-divider></v-divider>
 
-      <v-divider></v-divider>
-
-              <v-list
-          nav
-          dense
-        >
+        <v-list nav dense>
           <v-list-item link @click="showProfiles">
             <v-list-item-icon>
               <v-icon>mdi-account-group-outline</v-icon>
@@ -46,9 +40,11 @@
             <v-list-item-title>Salir</v-list-item-title>
           </v-list-item>
         </v-list>
-    </v-navigation-drawer>
+      </v-navigation-drawer>
       <v-content>
-        <v-toolbar v-if="nickname !== ''" dark color="#2f2f2f"><v-toolbar-title>{{ currentView }}</v-toolbar-title></v-toolbar>
+        <v-toolbar v-if="nickname !== ''" dark color="#2f2f2f"
+          ><v-toolbar-title>{{ currentView }}</v-toolbar-title></v-toolbar
+        >
 
         <router-view @onLogin="onLogin" @onNewPage="onNewPage"></router-view>
       </v-content>

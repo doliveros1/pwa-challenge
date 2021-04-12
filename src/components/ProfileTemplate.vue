@@ -25,7 +25,7 @@
       <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
 
       <vl-feature id="position-feature">
-        <vl-geom-point :coordinates.sync="center"></vl-geom-point>
+        <vl-geom-point :coordinates.sync="location"></vl-geom-point>
       </vl-feature>
 
       <vl-layer-tile id="osm">
@@ -90,6 +90,7 @@ export default {
     return {
       zoom: 2,
       center: [0, 0],
+      location: [0, 0],
       rotation: 0
     }
   },
@@ -119,6 +120,7 @@ export default {
       if (visible) {
         this.zoom = 5
         this.center = [parseFloat(this.profile.wrapper.location.coordinates.longitude), parseFloat(this.profile.wrapper.location.coordinates.latitude)]
+        this.location = [parseFloat(this.profile.wrapper.location.coordinates.longitude), parseFloat(this.profile.wrapper.location.coordinates.latitude)]
       }
     }
   }
