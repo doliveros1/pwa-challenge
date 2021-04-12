@@ -19,13 +19,20 @@
       </v-col>
       <v-col
       >
-        <v-card height="200px"
-          class="pa-2"
-          outlined
-          tile
-        >
-          Mapa
-        </v-card>
+        <div>
+    <vl-map :load-tiles-while-animating="true" :load-tiles-while-interacting="true"
+             data-projection="EPSG:4326" style="height: 200px">
+      <vl-view :zoom.sync="zoom" :center.sync="center" :rotation.sync="rotation"></vl-view>
+
+      <vl-feature id="position-feature">
+        <vl-geom-point :coordinates.sync="center"></vl-geom-point>
+      </vl-feature>
+
+      <vl-layer-tile id="osm">
+        <vl-source-osm></vl-source-osm>
+      </vl-layer-tile>
+    </vl-map>
+  </div>
       </v-col>
     </v-row>
     <v-row
@@ -69,12 +76,6 @@
       </v-col>
     </v-row>
   </v-container>
-  <!--v-card>
-    <h2> {{ profile }}</h2>
-    <v-card-actions>
-      <v-btn color="#fd0015" flat @click.stop="show=false">Cerrar</v-btn>
-    </v-card-actions>
-  </!--v-card-->
 </v-dialog>
 </template>
 
@@ -84,6 +85,13 @@ export default {
   props: {
     visible: Boolean,
     profile: Object
+  },
+  data () {
+    return {
+      zoom: 2,
+      center: [0, 0],
+      rotation: 0
+    }
   },
   computed: {
     show: {
@@ -109,9 +117,19 @@ export default {
   watch: {
     show (visible) {
       if (visible) {
-        // alert(JSON.stringify(this.profile))
+        this.zoom = 5
+        this.center = [parseFloat(this.profile.wrapper.location.coordinates.longitude), parseFloat(this.profile.wrapper.location.coordinates.latitude)]
       }
     }
   }
 }
 </script>
+<style>
+#map {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  height: 200px;
+  width: 300px;
+}
+</style>

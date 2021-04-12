@@ -16,6 +16,35 @@
           <v-icon dark>mdi-heart</v-icon>
         </v-btn>
       </template>
+    <template v-slot:body.append>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            <v-text-field
+              v-model="gender"
+              type="string"
+              label="Género"
+            ></v-text-field>
+          </td>
+          <td>
+            <v-text-field
+              v-model="nat"
+              type="string"
+              label="Nacionalidad"
+            ></v-text-field>
+          </td>
+          <td></td>
+          <td>
+            <v-text-field
+              v-model="age"
+              type="number"
+              label="Edad"
+            ></v-text-field>
+          </td>
+          <td colspan="4"></td>
+        </tr>
+      </template>
     </v-data-table>
     <ProfileTemplate :visible="showProfile" :profile="currentProfile" @close="showProfile=false" />
   </div>
@@ -33,7 +62,10 @@ export default {
     return {
       profiles: [],
       showProfile: false,
-      currentProfile: {}
+      currentProfile: {},
+      gender: '',
+      nat: '',
+      age: ''
     }
   },
   computed: {
@@ -41,10 +73,31 @@ export default {
       return [
         { text: 'Nombre', value: 'name' },
         { text: 'Email', value: 'email' },
-        { text: 'Género', value: 'gender' },
-        { text: 'Nacionalidad', value: 'nat' },
+        {
+          text: 'Género',
+          value: 'gender',
+          filter: value => {
+            if (!this.gender) return true
+            return value === this.gender
+          }
+        },
+        {
+          text: 'Nacionalidad',
+          value: 'nat',
+          filter: value => {
+            if (!this.nat) return true
+            return value.includes(this.nat)
+          }
+        },
         { text: 'Fecha nac.', value: 'dob' },
-        { text: 'Edad', value: 'age' },
+        {
+          text: 'Edad',
+          value: 'age',
+          filter: value => {
+            if (!this.age) return true
+            return value === parseInt(this.age)
+          }
+        },
         { text: 'Fecha reg.', value: 'dor' },
         { text: '', value: 'detail', sortable: false },
         { text: '', value: 'controls', sortable: false }
